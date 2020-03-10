@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -20,12 +21,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!iy2h90gwlggi+*mqmnqclol%1d(r36@a4vrn#hd(t#_7k=vr3'
+##SECRET_KEY = '!iy2h90gwlggi+*mqmnqclol%1d(r36@a4vrn#hd(t#_7k=vr3'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'AdewaleTj08172910249271')
+EMAIL_HOST_PASSWORD = os.environ.get('ibrahimtijani08adewale')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['heroku-freelance.herokuapp.com']
 
 
 # Application definition
@@ -128,3 +132,11 @@ CSRF_COOKIE_SECURE              = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
 SECURE_HSTS_SECONDS             = 1000000
 SECURE_FRAME_DENY               = True
+
+import dj_database_url
+
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
+
+django_heroku.settings(locals())
